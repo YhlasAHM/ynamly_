@@ -1,5 +1,6 @@
 import { IsNotEmpty } from "class-validator";
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { OrderItem } from "src/order-item/orderItem.entity";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('products')
 export class Product extends BaseEntity {
@@ -39,4 +40,10 @@ export class Product extends BaseEntity {
     })
     @IsNotEmpty()
     imageUrl: string; 
+/* 
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    createdAt: Date;
+
+    @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
+    orderItems: OrderItem[];  */
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { ProductService } from "./products.service";
 import { Product } from "./product.entity";
 import { CreateProductDto } from "./dto/create-product.dto";
@@ -18,10 +18,15 @@ export class ProductsController {
         return this.productService.getProducts()
     }
 
+    @Delete('/:id')
+    async deleteProduct(@Param('id') id: number): Promise<void> {
+        return await this.productService.deleteProduct_(id)
+    }
+
     @Post()
     @UseInterceptors(FileInterceptor('image', {
         storage: diskStorage({
-            destination: './uploads', 
+            destination: './uploads',
             filename: (req, file, callback) => {
                 const randomName = Array(32)
                     .fill(null)
@@ -33,12 +38,12 @@ export class ProductsController {
     }))
     async create(
         @Body() productData: CreateProductDto,
-        @UploadedFile() file: Express.Multer.File,  
+        @UploadedFile() file: Express.Multer.File,
     ): Promise<Product> {
         const imageUrl = file ? `/uploads/${file.filename}` : null;
         return this.productService.createProduct({
             ...productData,
-            imageUrl, 
+            imageUrl,
         });
     }
 }

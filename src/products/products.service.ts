@@ -13,19 +13,23 @@ export class ProductService{
 
     async getProducts(): Promise<Product[]>{
         return await this.productRepository.find()
-    }
+    } 
 
     async createProduct(productData: CreateProductDto): Promise<Product> {
         const product = this.productRepository.create(productData); 
-        return this.productRepository.save(product); 
+        return await this.productRepository.save(product); 
       }
 
-      async deleteProduct(id: number): Promise<void> {
+      async deleteProduct_(id: number): Promise<void> {
         const product = await this.productRepository.findOne({where: {id}}); 
-    
+
+        if (!product) {
+          throw new Error(`Product with id ${id} not found.`);
+        }
+
         if (product.imageUrl) {
           
-          const filePath = join(__dirname, '..', '..', 'uploads', product.imageUrl.split('/').pop());
+          const filePath = join(__dirname, '..', '..', 'uploads', product.imageUrl.split('/').pop() ==null ? '' : product.imageUrl.split('/').pop());
           
           fs.unlink(filePath, (err) => {
             if (err) {
