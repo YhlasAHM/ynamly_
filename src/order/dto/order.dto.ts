@@ -1,16 +1,23 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { OrderItemDto } from "src/order-item/dto/orderItem.dto";
+import { IsDecimal, IsArray, ValidateNested, IsInt } from 'class-validator';
+import { Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
+class OrderItemDTO {
+    @IsInt()
+    productId: number;
 
-export class OrderDto{
+    @IsInt()
+    qty: number;
+}
 
-    @ApiProperty({description:'Order userId '})
-    userId: number;
-
-    @ApiProperty({description:' totalAmount for the order'})
+export class OrderDTO {
+    @ApiProperty({ description: 'totalAmount' })
+    @IsDecimal({ decimal_digits: '2' })
     totalAmount: number;
 
-    @ApiProperty({description:" Order's orderItems",type:[OrderItemDto]})
-    orderItems: OrderItemDto[]
-    
+    @ApiProperty({ description: 'productId qty' })
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => OrderItemDTO)
+    orderItems: OrderItemDTO[];
 }

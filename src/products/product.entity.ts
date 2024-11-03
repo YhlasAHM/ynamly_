@@ -1,10 +1,9 @@
 import { IsNotEmpty } from "class-validator";
-import { OrderItem } from "src/order-item/orderItem.entity";
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('products')
 export class Product extends BaseEntity {
-    
+
     @PrimaryGeneratedColumn({
         comment: 'the product unique ID'
     })
@@ -26,24 +25,18 @@ export class Product extends BaseEntity {
     description: string;
 
     @Column({
-        type: "float", 
+        type: "float",
         comment: 'Product price'
     })
     @IsNotEmpty()
     price: number;
 
     @Column({
-        type: "varchar", 
+        type: "varchar",
         length: 500,
         comment: 'Product image URL or path',
-        nullable:true
+        nullable: true
     })
     @IsNotEmpty()
-    imageUrl: string; 
-/* 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    createdAt: Date;
-
-    @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
-    orderItems: OrderItem[];  */
+    imageUrl: string;
 }

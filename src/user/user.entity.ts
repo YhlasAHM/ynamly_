@@ -16,8 +16,8 @@ export class User extends BaseEntity {
   password: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date; 
+  createdAt: Date;
 
-  @OneToMany(() => Order, (order) => order.user) 
-  orders: Order[]; 
+  @OneToMany(() => Order, order => order.user)
+  orders: Order[];
 }
